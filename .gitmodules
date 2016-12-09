@@ -1,0 +1,7 @@
+[submodule "deps/mathfu"]
+	path = deps/mathfu
+	url = https://github.com/google/mathfu.git
+[submodule "deps/glfw"]
+	path = deps/glfw
+	url = https://github.com/glfw/glfw.git
+	branch = 3.2.1
