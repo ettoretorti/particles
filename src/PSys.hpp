@@ -67,7 +67,7 @@ public:
 		}
 
 		// Check for collisions
-		const size_t MAX_ITERATIONS = 10;
+		const size_t MAX_ITERATIONS = 3;
 		bool ok = false;
 		
 		//(2r)^2

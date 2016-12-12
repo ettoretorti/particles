@@ -298,69 +298,7 @@ void mainloop(GLFWwindow* window) {
 
 	while(!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
-
-		if(glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
-			cout << "spawn rate is " << spawnRate << endl;
-			cout << "gravity is " << params.gravity.y() << endl;
-			cout << "restituition is " << params.restituition << endl;
-		}
-		if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-			ang1 -= 0.015;
-		}
-		if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-			ang1 += 0.015;
-		}
 		
-		if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-			ang2 -= 0.015;
-		}
-		if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-			ang2 += 0.015;
-		}
-		if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-			cDist -= 0.05;
-		}
-		if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-			cDist += 0.05;
-		}
-		if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-			params.gravity += vec3(0.0, 0.2, 0.0);
-		}
-		if(glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
-			params.gravity -= vec3(0.0, 0.2, 0.0);
-		}
-		if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
-			spawnRate += 0.1;
-		}
-		if(glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-			spawnRate -= 0.1;
-		}
-		if(glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
-			params.restituition += 0.01;
-		}
-		if(glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
-			params.restituition -= 0.01;
-		}
-		
-		if(glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
-			params.velocity = quat::FromAngleAxis(0.02, vec3(0.0, 1.0, 0.0)) * params.velocity;
-		}
-		if(glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
-			params.velocity = quat::FromAngleAxis(-0.02, vec3(0.0, 1.0, 0.0)) * params.velocity;
-		}
-
-		if(glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
-			params.velocity = quat::FromAngleAxis(0.02, vec3(0.0, 0.0, 1.0)) * params.velocity;
-		}
-		if(glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
-			params.velocity = quat::FromAngleAxis(-0.02, vec3(0.0, 0.0, 1.0)) * params.velocity;
-		}
-
-		
-		vec3 cPos = cDist * vec3(8./5., 1., 0.);
-		cPos = quat::FromAngleAxis(ang1, vec3(0.0, 1.0, 0.0)) * quat::FromAngleAxis(-ang2, vec3(0.0, 0.0, 1.0)) *  cPos;
-		view = mat4::LookAt(vec3(0.), cPos, vec3(0., 1., 0.), 1.0);
-
 		// Time updates
 		double elapsedTime;
 		{
@@ -368,6 +306,71 @@ void mainloop(GLFWwindow* window) {
 			elapsedTime = now - curTime;
 			curTime = now;
 		}
+
+		if(glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+			cout << "spawn rate is " << spawnRate << endl;
+			cout << "gravity is " << params.gravity.y() << endl;
+			cout << "restituition is " << params.restituition << endl;
+		}
+		if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+			ang1 -= 1.5 * elapsedTime;
+		}
+		if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+			ang1 += 1.5 * elapsedTime;
+		}
+		
+		if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+			ang2 -= 1.5 * elapsedTime;
+		}
+		if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+			ang2 += 1.5 * elapsedTime;
+		}
+		if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+			cDist -= 4.0 * elapsedTime;
+		}
+		if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+			cDist += 4.0 * elapsedTime;
+		}
+		if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+			params.gravity += float(elapsedTime) * vec3(0.0, 8.0, 0.0);
+		}
+		if(glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+			params.gravity -= float(elapsedTime) * vec3(0.0, 8.0, 0.0);
+		}
+		if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+			spawnRate += elapsedTime * 2.0;
+		}
+		if(glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+			spawnRate -= elapsedTime * 2.0;
+		}
+		if(glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
+			params.restituition += elapsedTime * 0.25;
+			params.restituition = std::min(1.0f, params.restituition);
+		}
+		if(glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+			params.restituition -= elapsedTime * 0.25;
+			params.restituition = std::max(0.01f, params.restituition);
+		}
+		
+		if(glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
+			params.velocity = quat::FromAngleAxis(2.01 * elapsedTime, vec3(0.0, 1.0, 0.0)) * params.velocity;
+		}
+		if(glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+			params.velocity = quat::FromAngleAxis(-2.01 * elapsedTime, vec3(0.0, 1.0, 0.0)) * params.velocity;
+		}
+
+		if(glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
+			params.velocity = quat::FromAngleAxis(2.01 * elapsedTime, vec3(0.0, 0.0, 1.0)) * params.velocity;
+		}
+		if(glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
+			params.velocity = quat::FromAngleAxis(-2.01 * elapsedTime, vec3(0.0, 0.0, 1.0)) * params.velocity;
+		}
+
+
+		vec3 cPos = cDist * vec3(8./5., 1., 0.);
+		cPos = quat::FromAngleAxis(ang1, vec3(0.0, 1.0, 0.0)) * quat::FromAngleAxis(-ang2, vec3(0.0, 0.0, 1.0)) *  cPos;
+		view = mat4::LookAt(vec3(0.), cPos, vec3(0., 1., 0.), 1.0);
+
 
 		if(curTime > nextSpawn) {
 			pSys.spawn();
